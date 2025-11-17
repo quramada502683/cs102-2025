@@ -9,21 +9,28 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    keyword = keyword.upper()
-    key_index = 0
 
-    for char in plaintext:
-        if char.isalpha():
-            shift = ord(keyword[key_index % len(keyword)]) - ord("A")
+    new_keyword = ""
+    while len(new_keyword) < len(plaintext):
+        new_keyword += keyword
+    keyword = new_keyword.lower()
 
-            if char.isupper():
-                ciphertext += chr((ord(char) - ord("A") + shift) % 26 + ord("A"))
-            else:
-                ciphertext += chr((ord(char) - ord("a") + shift) % 26 + ord("a"))
+    for i in range(len(plaintext)):
+        char = plaintext[i]
 
-            key_index += 1
-        else:
+        if not char.isalpha():
             ciphertext += char
+            continue
+
+        shift = ord(keyword[i]) - 97
+        if char.islower():
+            x = ord(char)
+            new_x = (((x - 97) + shift) % 26) + 97
+            ciphertext += chr(new_x)
+        else:
+            x = ord(char)
+            new_x = (((x - 65) + shift) % 26) + 65
+            ciphertext += chr(new_x)
 
     return ciphertext
 
@@ -39,20 +46,27 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
-    keyword = keyword.upper()
-    key_index = 0
 
-    for char in ciphertext:
-        if char.isalpha():
-            shift = ord(keyword[key_index % len(keyword)]) - ord("A")
+    new_keyword = ""
+    while len(new_keyword) < len(ciphertext):
+        new_keyword += keyword
+    keyword = new_keyword.lower()
 
-            if char.isupper():
-                plaintext += chr((ord(char) - ord("A") - shift) % 26 + ord("A"))
-            else:
-                plaintext += chr((ord(char) - ord("a") - shift) % 26 + ord("a"))
+    for i in range(len(ciphertext)):
+        char = ciphertext[i]
 
-            key_index += 1
-        else:
+        if not char.isalpha():
             plaintext += char
+            continue
+
+        shift = ord(keyword[i]) - 97
+        if char.islower():
+            x = ord(char)
+            new_x = (((x - 97) - shift) % 26) + 97
+            plaintext += chr(new_x)
+        else:
+            x = ord(char)
+            new_x = (((x - 65) - shift) % 26) + 65
+            plaintext += chr(new_x)
 
     return plaintext

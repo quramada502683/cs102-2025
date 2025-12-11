@@ -1,4 +1,5 @@
 import pathlib
+import random
 import typing as tp
 
 T = tp.TypeVar("T")
@@ -105,7 +106,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     """
     for i, row in enumerate(grid):
         for j, value in enumerate(row):
-            if value == '.':
+            if value == ".":
                 return i, j
     return None
     pass
@@ -166,12 +167,12 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
     for row in solution:
-        if set(row) != set('123456789'):
+        if set(row) != set("123456789"):
             return False
 
     for col in range(9):
         column_values = [solution[row][col] for row in range(9)]
-        if set(column_values) != set('123456789'):
+        if set(column_values) != set("123456789"):
             return False
 
     for block_row in range(0, 9, 3):
@@ -181,7 +182,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
                 for col in range(block_col, block_col + 3):
                     block_values.append(solution[row][col])
 
-            if set(block_values) != set('123456789'):
+            if set(block_values) != set("123456789"):
                 return False
 
     return True
@@ -210,6 +211,37 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
+    N = max(0, min(N, 81))
+
+    grid = [["." for _ in range(9)] for _ in range(9)]
+
+    first_row = list(map(str, range(1, 10)))
+    random.shuffle(first_row)
+    grid[0] = first_row
+
+    solution = solve(grid)
+    if solution is None:
+        return generate_sudoku(N)
+
+    puzzle = [row[:] for row in solution]
+    all_positions = [(i, j) for i in range(9) for j in range(9)]
+    random.shuffle(all_positions)
+
+    numbers_count = 81
+    for i, j in all_positions:
+        if numbers_count <= N:
+            break
+
+        temp = puzzle[i][j]
+        puzzle[i][j] = "."
+
+        puzzle_copy = [row[:] for row in puzzle]
+        if solve(puzzle_copy) is not None:
+            numbers_count -= 1
+        else:
+            puzzle[i][j] = temp
+
+    return puzzle
     pass
 
 

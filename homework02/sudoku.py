@@ -55,8 +55,8 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    r, _ = pos
-    return grid[r]
+    row_index = pos[0]
+    return grid[row_index]
     pass
 
 
@@ -69,8 +69,9 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    _, c = pos
-    return [row[c] for row in grid]
+    col_index = pos[1]
+    col = [grid[i][col_index] for i in range(len(grid))]
+    return col
     pass
 
 
@@ -84,13 +85,15 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    r, c = pos
-    br = (r // 3) * 3  # верхняя строка блока
-    bc = (c // 3) * 3  # левый столбец блока
-    block = []
-    for i in range(br, br + 3):
-        for j in range(bc, bc + 3):
-            block.append(grid[i][j])
+    row, col = pos
+    block_size = 3
+
+    start_row = (row // block_size) * block_size
+    start_col = (col // block_size) * block_size
+
+    block = [
+        grid[i][j] for i in range(start_row, start_row + block_size) for j in range(start_col, start_col + block_size)
+    ]
     return block
     pass
 
@@ -107,7 +110,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     for i, row in enumerate(grid):
         for j, value in enumerate(row):
             if value == ".":
-                return i, j
+                return (i, j)
     return None
     pass
 
@@ -166,23 +169,26 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
-    for row in solution:
-        if set(row) != set("123456789"):
+    for i in range(9):
+        for j in range(9):
+            value = solution[i][j]
+            if value == "." or value not in {"1", "2", "3", "4", "5", "6", "7", "8", "9"}:
+                return False
+
+    for i in range(9):
+        row_values = get_row(solution, (i, 0))
+        if len(set(row_values)) != 9:
             return False
 
-    for col in range(9):
-        column_values = [solution[row][col] for row in range(9)]
-        if set(column_values) != set("123456789"):
+    for j in range(9):
+        col_values = get_col(solution, (0, j))
+        if len(set(col_values)) != 9:
             return False
 
-    for block_row in range(0, 9, 3):
-        for block_col in range(0, 9, 3):
-            block_values = []
-            for row in range(block_row, block_row + 3):
-                for col in range(block_col, block_col + 3):
-                    block_values.append(solution[row][col])
-
-            if set(block_values) != set("123456789"):
+    for i in range(0, 9, 3):
+        for j in range(0, 9, 3):
+            block_values = get_block(solution, (i, j))
+            if len(set(block_values)) != 9:
                 return False
 
     return True

@@ -41,12 +41,30 @@ def bin_tree_maze(
                 grid[x][y] = " "
                 empty_cells.append((x, y))
 
+
+
     # 1. выбрать любую клетку
     # 2. выбрать направление: наверх или направо.
     # Если в выбранном направлении следующая клетка лежит за границами поля,
     # выбрать второе возможное направление
     # 3. перейти в следующую клетку, сносим между клетками стену
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
+
+    for x, y in empty_cells:
+        direction = choice(["up", "right"])
+        may_go_up = x > 1
+        may_go_right = y < cols - 2
+
+        if direction == "up":
+            if may_go_up:
+                grid[x - 1][y] = " "
+            elif may_go_right:
+                grid[x][y + 1] = " "
+        elif direction == "right":
+            if may_go_right:
+                grid[x][y + 1] = " "
+            elif may_go_up:
+                grid[x - 1][y] = " "
 
     # генерация входа и выхода
     if random_exit:

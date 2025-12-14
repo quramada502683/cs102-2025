@@ -142,8 +142,29 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :param coord:
     :return:
     """
+    x, y = coord
+    rows, cols = len(grid), len(grid[0])
 
-    pass
+    neighbors = []
+    if x > 0:
+        neighbors.append(grid[x - 1][y])
+    if x < rows - 1:
+        neighbors.append(grid[x + 1][y])
+    if y > 0:
+        neighbors.append(grid[x][y - 1])
+    if y < cols - 1:
+        neighbors.append(grid[x][y + 1])
+
+    wall_count = sum(1 for neighbor in neighbors if neighbor == "■")
+
+    if (x == 0 or x == rows - 1) and (y == 0 or y == cols - 1):
+        return wall_count >= 2
+
+    if (x == 0 or x == rows - 1) or (y == 0 or y == cols - 1):
+        return wall_count >= 3
+
+    return False
+
 
 
 def solve_maze(

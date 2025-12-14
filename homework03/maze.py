@@ -18,8 +18,25 @@ def remove_wall(
     :param coord:
     :return:
     """
+    x, y = coord
+    directions = []
 
-    pass
+    if x >= 2:
+        directions.append((-2, 0))
+
+    if y + 2 < len(grid[0]):
+        directions.append((0, 2))
+
+    if not directions:
+        return grid
+
+    dx, dy = choice(directions)
+
+    wall_x = x + dx // 2
+    wall_y = y + dy // 2
+    grid[wall_x][wall_y] = " "
+
+    return grid
 
 
 def bin_tree_maze(

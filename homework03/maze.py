@@ -119,8 +119,32 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :param k:
     :return:
     """
+    rows, cols = len(grid), len(grid[0])
+    cells_to_update = set()
 
-    pass
+    for x in range(rows):
+        for y in range(cols):
+            if grid[x][y] == k:
+                neighbors = []
+                if x > 0:
+                    neighbors.append((x - 1, y))
+                if x < rows - 1:
+                    neighbors.append((x + 1, y))
+                if y > 0:
+                    neighbors.append((x, y - 1))
+                if y < cols - 1:
+                    neighbors.append((x, y + 1))
+
+                for nx, ny in neighbors:
+                    if grid[nx][ny] == 0 or grid[nx][ny] == " ":
+                        cells_to_update.add((nx, ny))
+
+    for nx, ny in cells_to_update:
+        grid[nx][ny] = k + 1
+
+    return grid
+
+
 
 
 def shortest_path(

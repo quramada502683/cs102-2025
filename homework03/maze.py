@@ -9,9 +9,7 @@ def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
     return [["■"] * cols for _ in range(rows)]
 
 
-def remove_wall(
-    grid: List[List[Union[str, int]]], coord: Tuple[int, int]
-) -> List[List[Union[str, int]]]:
+def remove_wall(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> List[List[Union[str, int]]]:
     """
 
     :param grid:
@@ -39,9 +37,7 @@ def remove_wall(
     return grid
 
 
-def bin_tree_maze(
-    rows: int = 15, cols: int = 15, random_exit: bool = True
-) -> List[List[Union[str, int]]]:
+def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> List[List[Union[str, int]]]:
     """
 
     :param rows:
@@ -57,8 +53,6 @@ def bin_tree_maze(
             if x % 2 == 1 and y % 2 == 1:
                 grid[x][y] = " "
                 empty_cells.append((x, y))
-
-
 
     # 1. выбрать любую клетку
     # 2. выбрать направление: наверх или направо.
@@ -111,7 +105,6 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     return exits
 
 
-
 def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:
     """
 
@@ -143,8 +136,6 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
         grid[nx][ny] = k + 1
 
     return grid
-
-
 
 
 def shortest_path(
@@ -195,7 +186,6 @@ def shortest_path(
     return path
 
 
-
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
     """
 
@@ -225,7 +215,6 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
         return wall_count >= 3
 
     return False
-
 
 
 def solve_maze(
@@ -271,7 +260,6 @@ def solve_maze(
     path = shortest_path(grid, exit_point)
 
     return grid, path
-
 
 
 def add_path_to_grid(

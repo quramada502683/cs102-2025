@@ -154,8 +154,42 @@ def solve_maze(
     :param grid:
     :return:
     """
+    grid = deepcopy(grid)
 
-    pass
+    exits = get_exits(grid)
+
+    if len(exits) < 2:
+        return grid, exits[0] if exits else None
+
+    if len(exits) == 1:
+        return grid, exits[0]
+
+    entrance = exits[0]
+    exit_point = exits[1]
+
+    if encircled_exit(grid, exit_point):
+        return grid, None
+
+    for x in range(len(grid)):
+        for y in range(len(grid[0])):
+            if grid[x][y] == " ":
+                grid[x][y] = 0
+            elif grid[x][y] == "X" and (x, y) == entrance:
+                grid[x][y] = 1
+            elif grid[x][y] == "X":
+                grid[x][y] = 0
+
+    k = 1
+    while grid[exit_point[0]][exit_point[1]] == 0:
+        grid = make_step(grid, k)
+        k += 1
+        if k > len(grid) * len(grid[0]):
+            return grid, None
+
+    path = shortest_path(grid, exit_point)
+
+    return grid, path
+
 
 
 def add_path_to_grid(

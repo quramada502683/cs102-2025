@@ -103,8 +103,13 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     :param grid:
     :return:
     """
+    exits = []
+    for x, row in enumerate(grid):
+        for y, cell in enumerate(row):
+            if cell == "X":
+                exits.append((x, y))
+    return exits
 
-    pass
 
 
 def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:

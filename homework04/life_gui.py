@@ -37,5 +37,41 @@ class GUI(UI):
                 pygame.draw.rect(self.screen, color, (x, y, width, height))
 
     def run(self) -> None:
-        # Copy from previous assignment
-        pass
+        """Запустить игру."""
+        clock = pygame.time.Clock()
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    running = False
+                elif event.type == KEYDOWN:
+                    if event.key == K_SPACE:
+                        self.paused = not self.paused
+                        print(f"Пауза: {'ВКЛ' if self.paused else 'ВЫКЛ'}")
+                elif event.type == MOUSEBUTTONDOWN:
+                    if self.paused and event.button == 1:
+                        mouse_x, mouse_y = event.pos
+                        col = mouse_x // self.cell_size
+                        row = mouse_y // self.cell_size
+                        if 0 <= row < self.life.rows and 0 <= col < self.life.cols:
+                            if self.life.curr_generation[row][col] == 1:
+                                self.life.curr_generation[row][col] = 0
+                                print(f"Убили клетку ({row}, {col})")
+                            else:
+                                self.life.curr_generation[row][col] = 1
+                                print(f"Оживили клетку ({row}, {col})")
+            self.screen.fill(pygame.Color("white"))
+            self.draw_grid()
+            self.draw_lines()
+            if not self.paused:
+                self.life.step()
+                if self.life.is_max_generations_exceeded:
+                    print(f"Игра окончена! Достигнут максимум: {self.life.max_generations}")
+                    running = False
+                elif not self.life.is_changing:
+                    print("Игра окончена! Поле стабилизировалось.")
+                    running = False
+            pygame.display.flip()
+            clock.tick(self.speed)
+        pygame.quit()
+        print("Игра завершена.")

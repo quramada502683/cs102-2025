@@ -85,6 +85,7 @@ class GameOfLife:
         """
         Отрисовка списка клеток с закрашиванием их в соответствующе цвета.
         """
+
         pass
 
     def get_neighbours(self, cell: Cell) -> Cells:
@@ -105,7 +106,17 @@ class GameOfLife:
         out : Cells
             Список соседних клеток.
         """
-        pass
+        row, col = cell
+        neighbours = []
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                if i == 0 and j == 0:
+                    continue
+                new_row, new_col = row + i, col + j
+                if 0 <= new_row < self.rows and 0 <= new_col < self.cols:
+                    neighbours.append(self.curr_generation[new_row][new_col])
+        return neighbours
+
 
     def get_next_generation(self) -> Grid:
         """

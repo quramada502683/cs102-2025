@@ -65,8 +65,26 @@ class GameOfLife:
         return neighbours
 
     def get_next_generation(self) -> Grid:
-        # Copy from previous assignment
-        pass
+        """
+                Получить следующее поколение клеток.
+
+                Returns
+                ----------
+                out : Grid
+                    Новое поколение клеток.
+                """
+        new_grid = self.create_grid(randomize=False)
+        for row in range(self.cell_height):
+            for col in range(self.cell_width):
+                neighbours = self.get_neighbours((row, col))
+                live_neighbours = sum(neighbours)
+                if self.grid[row][col] == 1:
+                    if live_neighbours == 2 or live_neighbours == 3:
+                        new_grid[row][col] = 1
+                else:
+                    if live_neighbours == 3:
+                        new_grid[row][col] = 1
+        return new_grid
 
     def step(self) -> None:
         """

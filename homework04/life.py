@@ -108,14 +108,26 @@ class GameOfLife:
         Изменилось ли состояние клеток с предыдущего шага.
         """
         return self.curr_generation != self.prev_generation
-    
+
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":
         """
         Прочитать состояние клеток из указанного файла.
         """
-        pass
+        with open(filename, "r") as f:
+            lines = f.readlines()
+        rows = len(lines)
+        cols = len(lines[0].strip())
+        game = GameOfLife(size=(rows, cols), randomize=False)
+        for row, line in enumerate(lines):
+            line = line.strip()
+            for col, char in enumerate(line):
+                if char == "1":
+                    game.curr_generation[row][col] = 1
+                else:
+                    game.curr_generation[row][col] = 0
+        return game
 
     def save(self, filename: pathlib.Path) -> None:
         """

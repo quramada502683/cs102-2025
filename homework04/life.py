@@ -133,4 +133,7 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        pass
+        with open(filename, "w") as f:
+            for row in self.curr_generation:
+                line = "".join("1" if cell == 1 else "0" for cell in row)
+                f.write(line + "\n")

@@ -32,5 +32,23 @@ class Console(UI):
 
     def run(self) -> None:
         screen = curses.initscr()
-        # PUT YOUR CODE HERE
-        curses.endwin()
+        curses.noecho()
+        curses.cbreak()
+        curses.curs_set(0)
+        screen.keypad(True)
+        screen.timeout(200)
+        try:
+            while self.life.is_changing and not self.life.is_max_generations_exceeded:
+                screen.clear()
+                self.draw_borders(screen)
+                self.draw_grid(screen)
+                screen.refresh()
+                key = screen.getch()
+                if key == ord("q"):
+                    break
+                self.life.step()
+        finally:
+            curses.curs_set(1)
+            curses.nocbreak()
+            curses.echo()
+            curses.endwin()

@@ -17,8 +17,11 @@ class GUI(UI):
         self.paused = False
 
     def draw_lines(self) -> None:
-        # Copy from previous assignment
-        pass
+        """Отрисовать сетку."""
+        for x in range(0, self.width + 1, self.cell_size):
+            pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height), 1)
+        for y in range(0, self.height + 1, self.cell_size):
+            pygame.draw.line(self.screen, pygame.Color("black"), (0, y), (self.width, y), 1)
 
     def draw_grid(self) -> None:
         for row in range(self.life.rows):

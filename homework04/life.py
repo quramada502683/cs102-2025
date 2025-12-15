@@ -90,7 +90,10 @@ class GameOfLife:
         """
         Выполнить один шаг игры.
         """
-        pass
+        self.prev_generation = [row[:] for row in self.curr_generation]
+        self.curr_generation = self.get_next_generation()
+        self.generations += 1
+
 
     @property
     def is_max_generations_exceeded(self) -> bool:

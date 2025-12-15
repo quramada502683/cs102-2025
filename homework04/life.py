@@ -37,22 +37,22 @@ class GameOfLife:
 
     def get_neighbours(self, cell: Cell) -> Cells:
         """
-                Вернуть список соседних клеток для клетки `cell`.
+        Вернуть список соседних клеток для клетки `cell`.
 
-                Соседними считаются клетки по горизонтали, вертикали и диагоналям,
-                то есть, во всех направлениях.
+        Соседними считаются клетки по горизонтали, вертикали и диагоналям,
+        то есть, во всех направлениях.
 
-                Parameters
-                ----------
-                cell : Cell
-                    Клетка, для которой необходимо получить список соседей. Клетка
-                    представлена кортежем, содержащим ее координаты на игровом поле.
+        Parameters
+        ----------
+        cell : Cell
+            Клетка, для которой необходимо получить список соседей. Клетка
+            представлена кортежем, содержащим ее координаты на игровом поле.
 
-                Returns
-                ----------
-                out : Cells
-                    Список соседних клеток.
-                """
+        Returns
+        ----------
+        out : Cells
+            Список соседних клеток.
+        """
         row, col = cell
         neighbours = []
         for i in range(-1, 2):
@@ -66,13 +66,13 @@ class GameOfLife:
 
     def get_next_generation(self) -> Grid:
         """
-                Получить следующее поколение клеток.
+        Получить следующее поколение клеток.
 
-                Returns
-                ----------
-                out : Grid
-                    Новое поколение клеток.
-                """
+        Returns
+        ----------
+        out : Grid
+            Новое поколение клеток.
+        """
         new_grid = self.create_grid(randomize=False)
         for row in range(self.cell_height):
             for col in range(self.cell_width):
@@ -94,7 +94,6 @@ class GameOfLife:
         self.curr_generation = self.get_next_generation()
         self.generations += 1
 
-
     @property
     def is_max_generations_exceeded(self) -> bool:
         """
@@ -108,7 +107,6 @@ class GameOfLife:
         Изменилось ли состояние клеток с предыдущего шага.
         """
         return self.curr_generation != self.prev_generation
-
 
     @staticmethod
     def from_file(filename: pathlib.Path) -> "GameOfLife":

@@ -13,8 +13,17 @@ class GUI(UI):
         pass
 
     def draw_grid(self) -> None:
-        # Copy from previous assignment
-        pass
+        for row in range(self.life.rows):
+            for col in range(self.life.cols):
+                if self.life.curr_generation[row][col] == 1:
+                    color = pygame.Color("green")
+                else:
+                    color = pygame.Color("white")
+                x = col * self.cell_size
+                y = row * self.cell_size
+                width = self.cell_size
+                height = self.cell_size
+                pygame.draw.rect(self.screen, color, (x, y, width, height))
 
     def run(self) -> None:
         # Copy from previous assignment

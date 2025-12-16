@@ -149,4 +149,3 @@ class GameOfLife:
                 elif not self.grid[x][y] and sum(neighbours) == 3:
                     new_grid[x][y] = 1
         return new_grid
-    
